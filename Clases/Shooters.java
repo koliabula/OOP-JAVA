@@ -1,15 +1,14 @@
 package Clases;
-public abstract class Shooters extends BasicHero{
-    protected int accuracy; // меткость
-    private int cartridges;//патроны
-    protected int range;
 
-    public Shooters(String name, int hp, int attack, int def, int accuracy, int cartridges, int range) {
-        super(name, hp, attack, def);
-        this.accuracy = accuracy;
+import java.util.ArrayList;
+
+public abstract class Shooters extends BasicHero implements GameInterface{
+    private int cartridges;//патроны
+
+        public Shooters(String name, int hp, int attack, int def, int speed, int[] damage, int cartridges, int x, int y) {
+        super(name, hp, attack, def, speed, damage, x, y);
         this.cartridges = cartridges;
-        this.range = range;
-    }   
+    }
 
     public int getCartridges() {
         return cartridges;
@@ -17,8 +16,18 @@ public abstract class Shooters extends BasicHero{
 
     @Override
     public String getInfo() {
-        return String.format("%s | мет: %d; | снар: %d; | range: %d", 
-                                super.getInfo(), accuracy, cartridges, range);
+        return String.format("%s | снар: %d; ", 
+                                super.getInfo(), cartridges);
     }
     
+    
+    
+    @Override
+    public void step(ArrayList <BasicHero> list1, ArrayList <BasicHero> list2) {
+        if ( super.getHp() != 0 && cartridges != 0){
+            int index = super.poiskVraga(list2);
+            attack(list2.get(index));
+            // poiskPeasant(list2); 
+        }
+    } 
 }

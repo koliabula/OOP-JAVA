@@ -1,20 +1,19 @@
 package Clases;
 public abstract class Magi extends BasicHero {
-    private int mana, maxMana;
+    private int magic;
 
-    public Magi(String name, int hp, int attack, int def, int mana) {
-        super(name, hp, attack, def);
-        this.mana = mana;
-        this.maxMana = mana;
+    
+
+    public Magi(String name, int hp, int attack, int def, int speed, int[] damage, int magic, int x, int y) {
+        super(name, hp, attack, def, speed, damage, x, y);
+        this.magic = magic;
     }
 
-    public int getMana() {return mana;}
 
-    public int getMaxMana() {return maxMana;}
 
     @Override
     public String getInfo(){
-        return String.format(" %s | mana: %d;",super.getInfo(), mana);
+        return String.format(" %s | magic: %d;",super.getInfo(), magic);
 
     }
 

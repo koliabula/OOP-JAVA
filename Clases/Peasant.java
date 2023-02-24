@@ -1,25 +1,29 @@
 package Clases;
+
+import java.util.ArrayList;
+
 public class Peasant extends BasicHero{
     protected int disguise; // маскировка
-    protected int help;//лечение
+    protected int delivery;//доставка
  
     
 
-    public Peasant(String name, int hp, int attack, int protection, int disguise, int help) {
-        super(name, hp, attack, protection);
+    public Peasant(String name, int hp, int attack, int def, int speed, int[] damage, int disguise, int help, int x, int y) {
+        super(name, hp, attack, def, speed, damage, x, y);
         this.disguise = disguise;
-        this.help = help;
+        this.delivery = delivery;
     }
-    public Peasant(String name){
-        super(name, 100, 1, 1);
+    public Peasant(String name, int x, int y){
+        super(name, 1, 1, 1, 3, new int[]{1, 1},x,y);
         this.disguise = 1;
-        this.help = 10; 
+        this.delivery = 1; 
     }
 
     
 
 
 
+    
     public int get_disquise() {
         return 0;
     }
@@ -27,7 +31,7 @@ public class Peasant extends BasicHero{
         return 0;
     }
     @Override
-    public void step() {
+    public void step(ArrayList <BasicHero> list1, ArrayList <BasicHero> list2) {
         System.out.println();
     }
     @Override

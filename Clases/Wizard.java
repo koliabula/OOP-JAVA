@@ -1,13 +1,15 @@
 package Clases;
 public class Wizard extends Magi{
 
-    public Wizard(String name, int hp, int attack, int def, int mana) {
-        super(name, hp, attack, def, mana);
+    public Wizard(String name, int hp, int attack, int def, int speed, int[] damage, int magic, int x, int y) {
+        super(name, hp, attack, def, speed, damage, magic, x, y);
     }
 
-    public Wizard(String name){
-        super(name, 200, 10, 5, 200);
+    public Wizard(String name, int x, int y){
+        super(name, 30, 17, 12, 9, new int []{-5, -5}, 1, x, y);
     }
+
+    
 
     @Override
     public String getInfo() {

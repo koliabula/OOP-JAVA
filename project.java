@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Random;
 
 import Clases.Bandit;
@@ -22,53 +23,80 @@ import Clases.Сrossbowman;
 // монах        (Имя, Здоровье, Защита, Мана, Магия)
   
 /**
- * project
+ * Атака защита у всех!
+ * выстрелы только у лучников
+ * крестьянин 1 ход принести 1 стрелу
+ * повреждения интервал(3-5)
+ * скорость (очерёдность хода персонажа)
+ * координаты
+ * 
+ * задание 1:
+ * 2 списка:
+ *      1 Крестьянин	Разбойник	Снайпер	Колдун
+        2 крестьянин    копейщик	арбалетчик	монах
+    вывести в консоль персонажей с учётом скорости
+
+    10 героев в команде
+
  */
 public class project {
 
     private static String getName(){
-        String name= String.valueOf(Names.values()[new Random().nextInt(Names.values().length-1)]);
+        String name = String.valueOf(Names.values()[new Random().nextInt(Names.values().length-1)]);
         return name;
     }
 
     public static void main(String[] args) {
 
-        ArrayList<BasicHero> list = new ArrayList<>();
-        for (int index = 0; index < 10; index++) { 
-            list.add(new Bandit(getName()));
-            list.add(new Peasant(getName()));
-            list.add(new Wizard(getName()));
-            list.add(new Monk(getName()));
-            list.add(new Spearman(getName()));
-            list.add(new Sniper(getName()));
-            list.add(new Сrossbowman(getName()));
-        }
+        ArrayList<BasicHero> team1 = newTeam(10, true);
+        ArrayList<BasicHero> team2 = newTeam(10, false);
+        ArrayList<BasicHero> tmpTeam = team1;
+        tmpTeam.addAll(team2);
+        sortByRS(tmpTeam);
+        for (BasicHero bh : team1) {  System.out.println(bh.getInfo()); }
 
-
-        for (BasicHero bh : list) {
-            System.out.println(bh.getInfo());
-            
-        }
-            
-
-        Bandit b1 = new Bandit(getName());
         
-
-        // System.out.println(p1.getInfo());
-
-        // Wizard w1 = new Wizard(getName());
-        // System.out.println(w1.getInfo());
-
-        // Monk m1 = new Monk(getName());
-        // System.out.println(m1.getInfo());
-
-        // Spearman s1 = new Spearman(getName());
-        // System.out.println(s1.getInfo());
-
-        // Sniper sn1 = new Sniper(getName());
-        // System.out.println(sn1.getInfo());
-        
-        // Сrossbowman cr1 = new Сrossbowman(getName());
-        // System.out.println(cr1.getInfo());    
+          
     }
+
+
+    public static ArrayList<BasicHero> newTeam(int size, boolean frac) { 
+        ArrayList<BasicHero> team = new ArrayList<>();
+        int coordX;
+        if (frac) {coordX = 1;}
+        else {coordX = 10;}
+    
+        for (int i = 1; i < size + 1; i++) {
+            switch (new Random().nextInt(1, 5)) {
+                case (1):
+                    if (frac) team.add(new Сrossbowman(getName(), coordX, i+1));
+                    else team.add(new Sniper(getName(), coordX, i+1));
+                    break;
+                case (2):
+                    if (frac) team.add(new Monk(getName(), coordX, i+1));
+                    else team.add(new Wizard(getName(), coordX, i+1));
+                    break;
+                case (3):
+                    team.add(new Peasant(getName(), coordX, i+1));
+                    break;
+                case (4):
+                    if (frac) team.add(new Spearman(getName(), coordX, i+1));
+                    else team.add(new Bandit(getName(), coordX, i+1));
+                    break;
+            }
+        }
+        return team;
+    }
+
+    public static void sortByRS (ArrayList team) {
+        team.sort(new Comparator<BasicHero>() {
+            @Override
+            public int compare(BasicHero o1, BasicHero o2) {
+                return o1.getSpeed() - o2.getSpeed();
+            }
+        });
+    }
+    
 }
+
+

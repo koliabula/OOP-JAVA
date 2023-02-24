@@ -2,12 +2,14 @@ package Clases;
 //Снайпер и Арбалетчик
 public class Сrossbowman extends Shooters{
 
-    public Сrossbowman(String name, int hp, int attack, int def, int accuracy, int cartridges, int range) {
-        super(name, hp, attack, def, accuracy, cartridges, range);
-    }
     
-    public Сrossbowman(String name){
-        super(name, 150, 12, 4, 85, 10, 3);
+    
+    public Сrossbowman(String name, int hp, int attack, int def, int speed, int[] damage, int cartridges, int x, int y) {
+        super(name, hp, attack, def, speed, damage, cartridges, x, y);
+    }
+
+    public Сrossbowman(String name, int x, int y){
+        super(name, 10, 6, 3, 4, new int[] {2, 3}, 16,x ,y);
     }
     @Override
     public String getInfo() {
