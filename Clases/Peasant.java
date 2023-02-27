@@ -30,12 +30,16 @@ public class Peasant extends BasicHero{
     public int get_help() {
         return 0;
     }
+
+
     @Override
     public void step(ArrayList <BasicHero> list1, ArrayList <BasicHero> list2) {
-        System.out.println();
+        if(!state.equals("Die")) state = "Stand";
     }
+
+
     @Override
     public String getInfo() {
-        return String.format("Я Фермер - %s", super.getInfo());
+        return String.format("Фермер - %s", super.getInfo());
     }
 }

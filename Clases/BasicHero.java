@@ -13,6 +13,7 @@ public abstract class BasicHero implements GameInterface{
     protected int attack, def;
     protected int[] damage = new int [2];
     protected Vector2D vector2d;
+    public String state;
    
 
     public BasicHero(String name, int hp, int attack, int def, int speed, int[] damage, int x, int y) {
@@ -24,6 +25,7 @@ public abstract class BasicHero implements GameInterface{
         this.speed = speed;
         this.damage = damage;
         this.vector2d = new Vector2D (x, y);
+        state = "Stand";
 
     }
 
@@ -54,28 +56,51 @@ public abstract class BasicHero implements GameInterface{
         return index;
     }
 
-    public void attack(BasicHero bh){
-        bh.setHp(getHp() - (attack - bh.def));
+
+    public void poiskSvoego(ArrayList<BasicHero> svoi) {
+        for (BasicHero item : svoi) {
+            if(item.hp < item.maxHp && !item.state.equals("Die")){
+                item.getDamage(this.damage[0]);
+                return;
+            }
+        }
     }
 
-    // public void poiskPeasant(ArrayList <BasicHero> list2){
-        
-    //     for (BasicHero bH : list2) {
-    //         if()
-    //     }
-    // }
+    public void attack(BasicHero bh){
+        float d = (bh.def - attack > 0) ? damage[0]:(bh.def - attack < 0) ? damage[1] : (damage[1]+damage[0])/2;
+        bh.getDamage(d);
+
+    }
+
+
+    protected void getDamage(float damage){
+        hp -= damage;
+        if (hp > maxHp) hp = maxHp;
+        if (hp < 0) {
+            state = "Die";
+            hp = 0;
+        }
+    }
+
+    public int poiskHero(ArrayList <BasicHero> list, String name){
+        for (BasicHero bh : list) {  
+            if(bh.getInfo().contains(name) && bh.state.equals("Stand")){
+                return list.indexOf(bh);
+            }  
+        }
+        return -1;
+    }
 
 
     @Override
     public String getInfo(){
-        return String.format("%s; | hp:  %d; | at: %d; | def: %d; |speed: %d;| %s" , 
-                                this.name, this.hp, this.attack, this.def, this.speed, this.vector2d.getX() );
+        return String.format("%s; | state = %s | hp:  %d; | at: %d; | def: %d; |speed: %d;| %s" , 
+                                this.name, this.state, this.hp, this.attack, this.def, this.speed, this.vector2d.getX() );
 
     }
     @Override
     public void step(ArrayList <BasicHero> list1, ArrayList <BasicHero> list2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'step'");
+
     }
 
     public int getSpeed() {

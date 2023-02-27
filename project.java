@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Random;
+import java.util.Scanner;
 
 import Clases.Bandit;
 import Clases.BasicHero;
@@ -11,34 +12,7 @@ import Clases.Spearman;
 import Clases.Wizard;
 import Clases.Сrossbowman;
 
-// Крестьянин   (Имя, Здоровье, Маскировка, Помощь)
 
-// Разбойник    (Имя, Здоровье, Атака, Защита, Уклонение, Умение)
-// копейщик     (Имя, Здоровье, Атака, Защита, Уклонение, Умение)
-
-// Снайпfcdghbер      (Имя, Здоровье, Атака, Защита, меткость, Патроны, Маскировка)
-// арбалетчик   (Имя, Здоровье, Атака, Защита, меткость, Патроны, Маскировка)
-
-// Колдун       (Имя, Здоровье, Защита, Мана, Магия)
-// монах        (Имя, Здоровье, Защита, Мана, Магия)
-  
-/**
- * Атака защита у всех!
- * выстрелы только у лучников
- * крестьянин 1 ход принести 1 стрелу
- * повреждения интервал(3-5)
- * скорость (очерёдность хода персонажа)
- * координаты
- * 
- * задание 1:
- * 2 списка:
- *      1 Крестьянин	Разбойник	Снайпер	Колдун
-        2 крестьянин    копейщик	арбалетчик	монах
-    вывести в консоль персонажей с учётом скорости
-
-    10 героев в команде
-
- */
 public class project {
 
     private static String getName(){
@@ -50,14 +24,32 @@ public class project {
 
         ArrayList<BasicHero> team1 = newTeam(10, true);
         ArrayList<BasicHero> team2 = newTeam(10, false);
-        ArrayList<BasicHero> tmpTeam = team1;
+        ArrayList<BasicHero> tmpTeam = new ArrayList<>();
+        tmpTeam.addAll(team1);
         tmpTeam.addAll(team2);
         sortByRS(tmpTeam);
-        for (BasicHero bh : team1) {  System.out.println(bh.getInfo()); }
 
+        Scanner user_input = new Scanner(System.in);
+        
+        for (BasicHero bh : tmpTeam) {  
+            System.out.println(bh.getInfo()); 
+        }
+
+        while (true){
+            user_input.nextLine();
+            for (BasicHero bh : tmpTeam) {
+                if (team1.contains(bh)) bh.step(team1, team2); 
+                else bh.step(team2, team1); 
+            }
+            sortByRS(team1);
+            sortByRS(team2);
+            for (BasicHero bh : team1) { System.out.println(bh.getInfo());}
+            for (BasicHero bh : team2) { System.out.println(bh.getInfo());}
+        }
         
           
     }
+
 
 
     public static ArrayList<BasicHero> newTeam(int size, boolean frac) { 
@@ -88,11 +80,12 @@ public class project {
         return team;
     }
 
-    public static void sortByRS (ArrayList team) {
+    public static void sortByRS (ArrayList<BasicHero> team) {
         team.sort(new Comparator<BasicHero>() {
             @Override
             public int compare(BasicHero o1, BasicHero o2) {
-                return o1.getSpeed() - o2.getSpeed();
+                if(o1.getSpeed() == o2.getSpeed()) return o1.getHp() - o2.getHp();
+                else return o1.getSpeed() - o2.getSpeed();
             }
         });
     }

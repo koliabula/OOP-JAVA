@@ -28,8 +28,7 @@ public class Bandit extends BasicHero{
 
     @Override
     public void step(ArrayList<BasicHero> list1, ArrayList<BasicHero> list2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'step'");
+        
     }
 
 
