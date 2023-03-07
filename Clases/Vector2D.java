@@ -12,6 +12,7 @@ public class Vector2D implements GameInterface{
 public double distance(Vector2D v) {
     return Math.sqrt(Math.pow(x - v.x, 2) + Math.pow(y-v.y, 2));
 }
+
     
 
     @Override

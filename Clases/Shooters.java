@@ -40,4 +40,16 @@ public abstract class Shooters extends BasicHero implements GameInterface{
         }
         cartridges--;
     } 
+
+    @Override
+    public String toString() {
+        return name +
+                " H:" + Math.round(getHp()) +
+                " D:" + def +
+                " A:" + attack +
+                " Dmg:" + Math.round(Math.abs((damage[0]+damage[1])/2)) + 
+                " Shots:" + cartridges + " " + 
+                state;
+    }
+
 }

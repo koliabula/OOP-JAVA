@@ -14,9 +14,5 @@ public abstract class Magi extends BasicHero {
 
 
 
-    @Override
-    public void step(ArrayList <BasicHero> list1, ArrayList <BasicHero> list2) {
-        if (state.equals("Die")) return;   
-        super.poiskSvoego(list1);
-    } 
+    
 }

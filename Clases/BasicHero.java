@@ -3,6 +3,8 @@ package Clases;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.text.StyledEditorKit.ForegroundAction;
+
 
 public abstract class BasicHero implements GameInterface{
     protected static int number;
@@ -12,7 +14,7 @@ public abstract class BasicHero implements GameInterface{
     private int hp, maxHp, speed;
     protected int attack, def;
     protected int[] damage = new int [2];
-    protected Vector2D vector2d;
+    protected Vector2D coords;
     public String state;
    
 
@@ -24,12 +26,12 @@ public abstract class BasicHero implements GameInterface{
         this.def = def;
         this.speed = speed;
         this.damage = damage;
-        this.vector2d = new Vector2D (x, y);
+        this.coords = new Vector2D (x, y);
         state = "Stand";
 
     }
 
-    
+    public int[] getCoords() {return new int[]{coords.x, coords.y};}
 
     public int getHp() {  
         return hp;  
@@ -38,7 +40,6 @@ public abstract class BasicHero implements GameInterface{
         this.hp = hp;
     }
     public int getMaxHp() {    return maxHp; }
-    public Vector2D getVector2d() {    return vector2d;  }
 
 
     public int poiskVraga(ArrayList<BasicHero> vragi) {
@@ -46,8 +47,8 @@ public abstract class BasicHero implements GameInterface{
         int index = -1;
         for (BasicHero item : vragi) {
             if(item.getHp() > 0){
-                dist = vector2d.distance(item.vector2d);
-                if (vector2d.distance(item.vector2d) < distMin){    
+                dist = coords.distance(item.coords);
+                if (coords.distance(item.coords) < distMin){    
                     distMin = dist;
                     index = vragi.indexOf(item);
                 }
@@ -76,7 +77,7 @@ public abstract class BasicHero implements GameInterface{
     protected void getDamage(float damage){
         hp -= damage;
         if (hp > maxHp) hp = maxHp;
-        if (hp < 0) {
+        if (hp <= 0) {
             state = "Die";
             hp = 0;
         }
@@ -91,11 +92,49 @@ public abstract class BasicHero implements GameInterface{
         return -1;
     }
 
+    public void go(BasicHero vrag, ArrayList <BasicHero> list1, ArrayList <BasicHero> list2) {
+        int distX = vrag.coords.x - this.coords.x;
+        int distY = vrag.coords.y - this.coords.y;
+        ArrayList<int[]> listCoords = new ArrayList<>();
+        for (BasicHero bh : list1) {
+            if(bh.state != "Die"){
+                listCoords.add(bh.getCoords()); 
+            } 
+        }
+        for (BasicHero bh : list2) {
+            if(bh.state != "Die"){
+                listCoords.add(bh.getCoords()); 
+            }   
+        }
+
+        if (distX >= 0){
+            if(distY >= 0){
+                if (distX > distY && !listCoords.contains(new int[] {coords.x+1, coords.y}))        this.coords.x++;
+                else if(!listCoords.contains(new int[] {coords.x, coords.y+1}))                     this.coords.y++;
+
+            }
+            if(distY < 0){
+                if (distX > Math.abs(distY) && !listCoords.contains(new int[] {coords.x+1, coords.y}))  this.coords.x++;
+                else if(!listCoords.contains(new int[] {coords.x, coords.y-1}))                         this.coords.y--;
+            }
+        }else{
+            if(distY >= 0){
+                if (Math.abs(distX) > distY && !listCoords.contains(new int[] {coords.x-1, coords.y}))  this.coords.x--;
+                else if(!listCoords.contains(new int[] {coords.x, coords.y+1}))                         this.coords.y++;
+
+            }
+            if(distY < 0){
+                if (Math.abs(distX) > Math.abs(distY) && !listCoords.contains(new int[] {coords.x-1, coords.y}))  this.coords.x--;
+                else if(!listCoords.contains(new int[] {coords.x, coords.y-1}))                         this.coords.y--;
+            }
+        }
+    }
+
 
     @Override
     public String getInfo(){
-        return String.format("%s; | state = %s | hp:  %d; | at: %d; | def: %d; |speed: %d;| %s" , 
-                                this.name, this.state, this.hp, this.attack, this.def, this.speed, this.vector2d.getX() );
+        return String.format("%10s; | state = %5s | hp:  %2d; | at: %2d; | def: %2d; |speed: %1d;| x:%1s; | y:%1s" , 
+                                this.name, this.state, this.hp, this.attack, this.def, this.speed, this.coords.getX(), this.coords.getY() );
 
     }
     @Override
@@ -107,5 +146,14 @@ public abstract class BasicHero implements GameInterface{
         return speed;
     }
 
+    @Override
+    public String toString() {
+        return name +
+                " H:" + Math.round(hp) +
+                " D:" + def +
+                " A:" + attack +
+                " Dmg:" + Math.round(Math.abs((damage[0]+damage[1])/2)) +" "+
+                state;
+    }
 
 }

@@ -14,7 +14,7 @@ public class Peasant extends BasicHero{
         this.delivery = delivery;
     }
     public Peasant(String name, int x, int y){
-        super(name, 1, 1, 1, 3, new int[]{1, 1},x,y);
+        super(name, 10, 1, 1, 3, new int[]{1, 1},x,y);
         this.disguise = 1;
         this.delivery = 1; 
     }
@@ -40,6 +40,6 @@ public class Peasant extends BasicHero{
 
     @Override
     public String getInfo() {
-        return String.format("Фермер - %s", super.getInfo());
+        return String.format("Фермер -       %s", super.getInfo());
     }
 }
